@@ -3,24 +3,12 @@ package controllers
 import (
 	"strconv"
 
+	"github.com/eloicahhing/go-fiber-tutorial/services"
+
 	"github.com/eloicahhing/go-fiber-tutorial/database"
 	"github.com/eloicahhing/go-fiber-tutorial/models"
 	"github.com/gofiber/fiber/v2"
 )
-
-// ReadAllTodo return all Todos
-func ReadAllTodo(ctx *fiber.Ctx) error {
-	ctx.Accepts("application/json") // "application/json"
-
-	if response := database.DB.Find(&models.Todos); response.Error != nil {
-		panic("Error occurred while retrieving roles from the database: " + response.Error.Error())
-	}
-	response := ctx.Status(fiber.StatusOK).JSON(models.Todos)
-	if response != nil {
-		panic("Error occurred when returning JSON of roles: " + response.Error())
-	}
-	return response
-}
 
 // CreateTodo create a new Todo
 func CreateTodo(ctx *fiber.Ctx) error {
@@ -99,5 +87,23 @@ func DeleteTodo(ctx *fiber.Ctx) error {
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "the todo has been updated",
+	})
+}
+
+// ReadAllTodo return all Todos
+func ReadAllTodo(ctx *fiber.Ctx) error {
+	ctx.Accepts("application/json") // "application/json"
+
+	response, err := services.ReadAllTodos()
+
+	if err != nil {
+		_ = ctx.JSON(&fiber.Map{
+			"status": false,
+			"error":  err,
+		})
+	}
+	return ctx.JSON(&fiber.Map{
+		"status": true,
+		"books":  response,
 	})
 }

@@ -38,6 +38,7 @@ func ConnectDB() {
 	fmt.Println("Connection Opened to Database")
 
 	DB.AutoMigrate(&models.Todo{})
+	DB.AutoMigrate(&models.Project{})
 	//DB.AutoMigrate(&models.LoyaltyCard{})
 	//DB.AutoMigrate(&models.LoyaltyCardWallet{})
 

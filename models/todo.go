@@ -5,7 +5,7 @@ import "time"
 // Todo Model
 type Todo struct {
 	ID        int       `gorm:"primaryKey" json:"id"`
-	Name      string    `json:"name"`
+	Name      string    `gorm:"varchar(50)" json:"name"`
 	Completed bool      `json:"completed"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
